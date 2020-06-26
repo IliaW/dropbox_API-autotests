@@ -8,12 +8,7 @@ import java.util.Base64;
 
 public class EncoderHelper {
 
-   public static String encodeFileToBase64(File file) {
-      try {
+   public static String encodeFileToBase64(File file) throws IOException {
          return Base64.getEncoder().encodeToString(Files.toByteArray(file));
-      } catch (IOException e) {
-         e.printStackTrace();
-         return "";
-      }
    }
 }
