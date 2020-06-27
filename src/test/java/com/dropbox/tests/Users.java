@@ -2,6 +2,7 @@ package com.dropbox.tests;
 
 import com.dropbox.Launcher;
 import com.dropbox.data.AccessToken;
+import com.dropbox.httpclient.ContentType;
 import com.dropbox.httpclient.PostRequest;
 import com.dropbox.httpclient.Response;
 import com.dropbox.pojo.request.GetAccountRequest;
@@ -42,11 +43,11 @@ public class Users extends Launcher {
    }
 
    @Test(dependsOnMethods = "getCurrentAccountWithValidAccessToken")
-   public void getAccountWithValidId() throws IOException {
+   public void getAccountWithValidAccountId() throws IOException {
       Response response = new PostRequest()
               .url(USERS_URL + "get_account")
               .header("authorization", "Bearer " + AccessToken.BASIC_USER)
-              .header("content-type", "application/json")
+              .header(ContentType.APPLICATION_JSON)
               .jsonBody(new GetAccountRequest(getCurrentAccountResponse.accountId))
               .execute();
       getAccountResponse = response.parseJsonToObject(GetAccountResponse.class);
@@ -55,11 +56,11 @@ public class Users extends Launcher {
    }
 
    @Test
-   public void getAccountWithInvalidId() throws IOException {
+   public void getAccountWithInvalidAccountId() throws IOException {
       Response response = new PostRequest()
               .url(USERS_URL + "get_account")
               .header("authorization", "Bearer " + AccessToken.BASIC_USER)
-              .header("content-type", "application/json")
+              .header(ContentType.APPLICATION_JSON)
               .jsonBody(new GetAccountRequest("dbid:BABBcTGtr-BjUruSIAh4Qe1udNgPxe-7PjQ"))
               .execute();
       assertThat(response.getStatusCode()).isEqualTo(HttpStatus.SC_CONFLICT);
@@ -75,8 +76,7 @@ public class Users extends Launcher {
               .execute();
       getSpaceUsageResponse = response.parseJsonToObject(GetSpaceUsageResponse.class);
       assertThat(response.getStatusCode()).isEqualTo(HttpStatus.SC_OK);
-      assertThat(getSpaceUsageResponse.allocation.allocated).isEqualTo(2147483648L); //Space for Basic user
+      assertThat(getSpaceUsageResponse.allocation.allocated).isEqualTo(2147483648L); // Available space for Basic User
       assertThat(response.getTimeExecutionByMs()).isLessThan(1000);
-
    }
 }

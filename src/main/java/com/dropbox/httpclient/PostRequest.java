@@ -7,11 +7,13 @@ import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
+import org.apache.http.entity.FileEntity;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.client.LaxRedirectStrategy;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 
@@ -47,6 +49,11 @@ public class PostRequest {
       return this;
    }
 
+   public PostRequest header(String name, RequestPOJO jsonValue) {
+      httpPost.addHeader(name, new Gson().toJson(jsonValue));
+      return this;
+   }
+
    public PostRequest jsonBody(String jsonBody) {
       httpPost.setEntity(new StringEntity(jsonBody, ContentType.APPLICATION_JSON));
       return this;
@@ -54,6 +61,11 @@ public class PostRequest {
 
    public PostRequest jsonBody(RequestPOJO object) {
       httpPost.setEntity(new StringEntity(new Gson().toJson(object), ContentType.APPLICATION_JSON));
+      return this;
+   }
+
+   public PostRequest fileBody(File file) {
+      httpPost.setEntity(new FileEntity(file, ContentType.APPLICATION_OCTET_STREAM));
       return this;
    }
 

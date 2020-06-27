@@ -6,6 +6,7 @@ import com.dropbox.pojo.response.GetSpaceUsageResponse;
 
 public class Launcher {
 
+   // Pojo response
    public GetCurrentAccountResponse getCurrentAccountResponse;
    public GetAccountResponse getAccountResponse;
    public GetSpaceUsageResponse getSpaceUsageResponse;
